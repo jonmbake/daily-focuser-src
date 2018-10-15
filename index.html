@@ -22,7 +22,7 @@
   <main role="main" class="container">
     <div class="main-content">
       <h2>Today's Tasks</h2>
-      <div class="row mb-3">
+      <div class="row justify-content-md-center mb-3">
         <div class="col col-lg-8">
           <ul id="task-list" class="list-group">
             <li class="list-group-item">
@@ -72,7 +72,7 @@
                 Completed {{ timerMode }}
               </div>
               <div class="alert alert-secondary" role="alert" v-show="timerMode === 'Focus' && status !== 'Completed'">
-                Focusing on '{{ store.getActive().text }}'
+                Focusing on '{{ store.getActive() && store.getActive().text }}'
               </div>
               <div class="timer" v-text="timerDisplay">25:00</div>
             </div>
