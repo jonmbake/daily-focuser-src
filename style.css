@@ -1,0 +1,22 @@
+body {
+  padding-top: 5rem;
+}
+.main-content {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.timer {
+  font-size: 90px;
+}
+.modal-footer-center {
+  display: block;
+}
+[v-cloak] {
+  display: none;
+}
+.text-white .close {
+  color: white;
+}
+.task-list-item {
+  cursor: pointer;
+}

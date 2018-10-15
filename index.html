@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+  <title>Daily Focuser</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Daily Focuser</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+  <main role="main" class="container">
+    <div class="main-content">
+      <h2>Today's Tasks</h2>
+      <div class="row mb-3">
+        <div class="col col-lg-8">
+          <ul id="task-list" class="list-group">
+            <li class="list-group-item">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Add a task" aria-label="Task" aria-describedby="add-task-btn" id="add-task-input" v-focus="focus" v-model="taskText" v-on:keyup.13="addTask" v-bind:class="{ 'is-invalid': isInvalid }">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="add-task-btn" v-on:click="addTask">Add</button>
+                </div>
+                <div class="invalid-feedback">
+                  Task must not be blank.
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item font-italic" v-show="store.state.tasks.length === 0">What do you want to accomplish today? Get started by adding a task!</li>
+            <task-item
+              v-for="task in store.state.tasks"
+              v-bind:task="task"
+              v-bind:store="store"
+              v-bind:key="task.id">
+            </task-item>
+        </ul>
+      </div>
+    </div>
+    <div id="timer" class="mb-3">
+      <button type="button" class="btn btn-success btn-lg" v-on:click="open('Focus')">Focus</button>
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-info btn-lg ml-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Break
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="#" v-on:click.prevent="open('Short Break')">Short</a>
+          <a class="dropdown-item" href="#" v-on:click.prevent="open('Long Break')">Long</a>
+        </div>
+      </div>
+      <button type="button" class="btn btn-danger btn-lg ml-4" v-on:click="completeTask">Complete</button>
+      <div id="timer-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header text-white" v-bind:class="{ 'bg-success': status === 'Started', 'bg-danger': status !== 'Started' }">
+              <h5 class="modal-title" v-text="timerMode">Focus</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-success" role="alert" v-show="status === 'Completed'">
+                Completed {{ timerMode }}
+              </div>
+              <div class="alert alert-secondary" role="alert" v-show="timerMode === 'Focus' && status !== 'Completed'">
+                Focusing on '{{ store.getActive().text }}'
+              </div>
+              <div class="timer" v-text="timerDisplay">25:00</div>
+            </div>
+            <div class="modal-footer modal-footer-center">
+              <button type="button" class="btn btn-primary btn-lg" v-on:click="start">Start</button>
+              <button type="button" class="btn btn-info btn-lg ml-4" v-on:click="pause">Pause</button>
+              <button type="button" class="btn btn-secondary btn-lg ml-4" v-on:click="reset">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="bundle.js"></script>
+</body>
+</html>
